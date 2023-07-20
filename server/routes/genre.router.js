@@ -3,8 +3,13 @@ const router = express.Router();
 const pool = require('../modules/pool')
 
 router.get('/', (req, res) => {
-  // Add query to get all genres
-  res.sendStatus(500)
+
+  pool.query('SELECT * FROM "genres";')
+  .then((data) => {
+    console.log("Genre get recieved...")
+    res.status(201).send(data.rows)
+  })
+  
 });
 
 module.exports = router;

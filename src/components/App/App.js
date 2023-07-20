@@ -21,3 +21,13 @@ function App() {
 
 
 export default App;
+
+
+/* - TODO: When a movie poster is clicked, a user should be brought to the `/details` 
+    view for that movie.
+
+### Details Page
+
+This should show all details **including ALL genres** for the selected movie, 
+including title, description, and the image, too! Use Sagas and Redux to handle 
+these requests and data. */
