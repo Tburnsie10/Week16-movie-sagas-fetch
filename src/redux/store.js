@@ -25,15 +25,27 @@ const genres = (state = [], action) => {
     }
 }
 
+const table = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_TABLE':
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
     combineReducers({
         movies,
         genres,
+        table,
     }),
-    applyMiddleware(sagaMiddleware, logger)
+    applyMiddleware(sagaMiddleware, logger),
 );
+
+
 
 function* fetchAllMovies() {
     // get all movies from the DB
@@ -50,8 +62,40 @@ function* fetchAllMovies() {
     }
 }
 
+function* fetchTable() {
+    try {
+        const response = yield fetch('/api/table');
+        if (!response.ok) {
+            throw new Error("Network response was not OK");
+        }
+        const table = yield response.json();
+        yield put({ type: 'SET_TABLE', payload: table });
+    } catch {
+        console.log('get all table error');
+        alert('Something went wrong fetching the table.')
+    }
+}
+
+function* fetchAllGenres() {
+    try {
+        const response = yield fetch('/api/genre');
+        if (!response.ok) {
+            throw new Error("Network response was not OK");
+        }
+        const genres = yield response.json();
+        yield put({ type: 'SET_GENRES', payload: genres });
+    } catch {
+        console.log('get all error from genres');
+        alert('Something went wrong fetching the genres.')
+    }
+}
+
+
 function* watcherSaga() {
     yield takeEvery('FETCH_MOVIES', fetchAllMovies);
+    yield takeEvery('FETCH_TABLE', fetchTable);
+    yield takeEvery('FETCH_GENRE', fetchAllGenres);
+
 }
 
 sagaMiddleware.run(watcherSaga);
@@ -63,3 +107,5 @@ export function StoreProvider({ children }) {
         </Provider>
     )
 }
+
+
