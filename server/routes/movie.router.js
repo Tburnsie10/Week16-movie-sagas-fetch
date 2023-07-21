@@ -4,12 +4,7 @@ const pool = require('../modules/pool')
 
 router.get('/', (req, res) => {
 
-  const query = `SELECT * FROM movies 
-  INNER JOIN movies_genres
-  ON movies.id=movies_genres.movie_id
-  INNER JOIN genres 
-  ON movies_genres.genre_id=genres.id
-  ORDER BY "title" ASC`;
+  const query = `SELECT * FROM movies ORDER BY "title" ASC`;
   pool.query(query)
     .then( result => {
       res.send(result.rows);
@@ -20,6 +15,33 @@ router.get('/', (req, res) => {
     })
 
 });
+
+router.get('/:id', (req, res) => {
+
+  const query = `SELECT * FROM movies 
+  INNER JOIN movies_genres
+  ON movies.id=movies_genres.movie_id
+  INNER JOIN genres 
+  ON movies_genres.genre_id=genres.id
+  WHERE movies.id=${req.params.id}
+  ORDER BY "title" ASC`;
+
+  pool.query(query)
+    .then( result => {
+      let description = result.rows[0]
+      console.log(description)
+      let genres = result.rows.map((row) => row.name)
+      console.log(genres)
+      console.log(req.params.id)
+      description.name=genres
+      res.send(description);
+    })
+
+    .catch(err => {
+      console.log('ERROR: Get detail', err);
+      res.sendStatus(500)
+    })
+})
 
 router.post('/', (req, res) => {
   console.log(req.body);

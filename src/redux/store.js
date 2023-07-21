@@ -34,6 +34,15 @@ const table = (state = [], action) => {
     }
 }
 
+const detail = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_DETAIL':
+            return [action.payload];
+        default:
+            return state;
+    }
+}
+
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
@@ -41,6 +50,7 @@ const store = createStore(
         movies,
         genres,
         table,
+        detail,
     }),
     applyMiddleware(sagaMiddleware, logger),
 );
