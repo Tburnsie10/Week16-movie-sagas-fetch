@@ -68,7 +68,6 @@ router.post('/', (req, res) => {
         //Now that both are done, send back success!
         res.sendStatus(201);
       }).catch(err => {
-        // catch for second query
         console.log(err);
         res.sendStatus(500)
       })
