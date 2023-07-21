@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './MovieList.css'
-import { Link } from 'react-router-dom';
 
 function MovieList() {
     async function setDetail(event){
@@ -26,9 +25,9 @@ function MovieList() {
             <section className="movies">
                 {movies.map(movie => {
                     return (
-                        <div onClick={setDetail} key={movie.id} >
+                        <div key={movie.id} >
                             <h3>{movie.title}</h3>
-                            <img id={movie.id} src={movie.poster} alt={movie.title}/>
+                            <img onClick={setDetail} id={movie.id} src={movie.poster} alt={movie.title}/>
                         </div>
                     );
                 })}
